@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-
 import static com.badlogic.gdx.utils.ScreenUtils.clear;
 
 /**
@@ -15,9 +14,9 @@ import static com.badlogic.gdx.utils.ScreenUtils.clear;
 public class GameScreen implements Screen
 {
     private SpriteBatch batch;
-    private Texture image;
-    private float x;
-    private float velocidadX;
+    private Texture shipTexture;
+    private Spaceship nave_x;
+
 
     /**
      * Este metodo se ejecuta una sola vez, justo cuando la pantalla se convierte en activa
@@ -30,10 +29,8 @@ public class GameScreen implements Screen
     public void show()
     {
         batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
-        x = 140f;
-        velocidadX = 100f;
-
+        shipTexture = new Texture("libgdx.png");
+        nave_x = new Spaceship(shipTexture, 100, 50);
     }
 
     /**
@@ -48,20 +45,10 @@ public class GameScreen implements Screen
     public void render(float delta)
     {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
-        x = x + velocidadX * delta;
-
-        if (x >= Gdx.graphics.getWidth() - image.getWidth()) {
-            velocidadX = -velocidadX;
-        }
-        if (x <= 0) {
-            velocidadX = -velocidadX;
-        }
-
+        nave_x.movement(delta);
         batch.begin();
-        batch.draw(image, x, 210);
+        nave_x.draw(batch);
         batch.end();
-
     }
 
     /**
@@ -132,7 +119,7 @@ public class GameScreen implements Screen
     @Override
     public void dispose() {
         batch.dispose();
-        image.dispose();
+        shipTexture.dispose();
 
     }
 }
